@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minhas Tarefas</title>
+</head>
+<body>
+    <h1>Minhas Tarefas</h1>
+    <a href="{{ url_for('create_task') }}">Nova Tarefa</a>
+    <!-- Link que leva para a página de criar uma nova tarefa-->
+    <br><br>
+    <!-- quebra de linha para dar espaço-->
+    <table border="1" cellpadding="5">
+        <!-- tabela com borda de 1px e espaçamento de 5px-->
+        <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Status</th>
+            <th>Usuário</th>
+            <th>Ações</th>
+        </tr>
+        <!-- cabeçalho da tabela, cada th desse é uma coluna-->
+        {% for task in tasks %}
+        <!-- começa um loop para a listagem bonitinha, para cada tarefa na lista de tarefas-->
+        <tr>
+            <td>{{ task.title }}</td>
+            <!-- mostra o titulo da tarefa-->
+            <td>{{ task.description }}</td>
+            <!-- kostra a descrição da tarefa-->
+            <td>{{ task.status }}</td>
+            <!--mostra o status da tarefa-->
+            <td>{{ task.user.name }}</td>
+            <!--mostra o nome do usuário vinculado a tarefa-->
+            <td>
+                <form action="{{ url_for('update_task_status', task_id=task.id) }}" method="post" style="display:inline;">
+                    <!-- formulário para atualizar o status da tarefa-->
+                    <button type="submit">
+                        {% if task.status == 'Pendente' %}Concluir{% else %}Reabrir{% endif %}
+                    </button>
+                    <!-- o botão muda o texto conforme o status da tarefa-->
+                </form>
+                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" style="display:inline;">
+                    <!-- formulário para excluir a tarefa-->
+                    <button type="submit">Excluir</button>
+                    <!--Botão para ecluir a tarefa-->
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        <!-- termina o loop-->
+    </table>
+</body>
+</html>
